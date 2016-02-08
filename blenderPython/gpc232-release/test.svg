@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1024" height="1024" viewBox="0 0 1024 1024"
+     xmlns="http://www.w3.org/2000/svg" version="1.1">
+<polygon stroke="black" stroke-width="1" fill="rgb(6, 204, 14)" fill-opacity="0.25" points="0.026,0.018 1.213,0.039 1.213,0.018 " />
+<polygon stroke="black" stroke-width="1" fill="rgb(6, 204, 14)" fill-opacity="0.25" points="0.026,0.018 0.024,0.345 1.222,0.344 1.213,0.039 " />
+<polygon stroke="black" stroke-width="1" fill="rgb(6, 204, 14)" fill-opacity="0.25" points="0.024,0.345 1.223,0.365 1.222,0.344 " />
+<polygon stroke="black" stroke-width="1" fill="rgb(6, 204, 14)" fill-opacity="0.25" points="0.024,0.345 0.023,0.671 1.233,0.671 1.223,0.365 " />
+
+</svg>
