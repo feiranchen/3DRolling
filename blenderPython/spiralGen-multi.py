@@ -1,6 +1,5 @@
-import re
+import re, sys, getopt, math, os, shutil
 from xml.dom import minidom
-import math
 from array import *
 
 class SegmentMeta(object):
@@ -29,15 +28,33 @@ def linkFaces(objfile, vertex_group_count):
 		line += 4
 
 # All units should be in mm
-def spiralGen(filename):
+def spiralGen(filename, argv):
 	# Params(all units are in mm)
 	target_radius = 100 # 10cm
 	target_gap = 0.5 # .5mm
+	init_radius = 2 # inital rod radius 2mm
+	# Get customized parameters
+	print '''usage: python spiralGen-multi.py -r <target_radius> -g <target_gap> -i <inital_radius> #all units in mm.
+	Default values are used if not provided'''
+	try:
+		opts,args = getopt.getopt(argv,"r:g:i:")
+		for opt, arg in opts:
+			if opt == '-r':
+				target_radius = float(arg)
+			elif opt == '-g':
+				target_gap = float(arg)
+			elif opt == '-i':
+				init_radius = float(arg)
+	except getopt.GetoptError:
+		print "no options received, using default values"
+	print "target_radius = %f" % target_radius
+	print "target_gap = %f" % target_gap
+	print "init_radius = %f" % init_radius
+
 	height = target_radius * 2 # a reasonable height
 	max_slice_width = 0.6
 	cutoff_length = 600 # 10mm is typically a resonable length
 	file_count = 0
-	init_radius = 2 # inital rod radius 2mm
 	layer_thickness = target_gap / 10
 	uv_height = (height + 0.0)/cutoff_length
 
@@ -48,6 +65,8 @@ def spiralGen(filename):
 	outer_curr_lenth = 0
 
 	# Global Variables
+	shutil.rmtree("gen")
+	os.makedirs("gen")
 	objfile = open("gen/" + filename + "_" + str(file_count) +".obj", 'w')
 	segments = []
 	while radius <= target_radius:
@@ -112,7 +131,12 @@ def spiralGen(filename):
 				linkFaces(objfile, vertex_group_count + 1)
 				objfile.close()
 				break
-		print radius
-	print slice_num
-	
-spiralGen("test")
+		sys.stdout.write("\rsprial growing to radius @ %fmm" % radius)
+		sys.stdout.flush()
+	print "\nTotal number of slices %d" % slice_num
+
+def main(argv):
+	spiralGen("test", argv)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

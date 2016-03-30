@@ -1,5 +1,6 @@
 *.svg
 *.out
+*.obj
 blender_uv_out/*
 blender_uv_out_sample/*
 
