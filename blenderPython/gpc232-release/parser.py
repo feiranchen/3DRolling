@@ -62,7 +62,7 @@ def svg_to_svg(filename):
 	svg.write('<?xml version="1.0" standalone="no"?>\n' +
 '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" \n' +
 '  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
-'<svg width="32768" height="60.73" viewBox="0 0 32768 60.73"\n' +
+'<svg width="32768" height="32768" viewBox="0 0 32768 32768"\n' +
 '     xmlns="http://www.w3.org/2000/svg" version="1.1">\n')
 
 	for p in poly:
@@ -78,8 +78,8 @@ def svg_to_svg(filename):
 	svg.write('</svg>\n')
 
 # flip the orientation of the image
-#svg_to_svg("smalltest")
+svg_to_svg("blender_uv_output_0")
 # <filename>.out is in the form that gpc can read
-#svg_to_bare("smalltest.out")
+svg_to_bare("blender_uv_output_0.out")
 #file_to_svg("subjfile")
-file_to_svg("outfile")
+#file_to_svg("outfile")
