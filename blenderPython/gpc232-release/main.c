@@ -15,7 +15,7 @@ int main(void)
   double width = 18.73;
 
   // Get Union results of the support materials
-  sfp= fopen("smalltest.out.out", "r");
+  sfp= fopen("blender_uv_output.out.out", "r");
   gpc_read_init(sfp, 1);
   union_result = gpc_read_all_polygon_recursive(0, gpc_get_num_polygons());
 
