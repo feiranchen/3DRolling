@@ -1040,8 +1040,8 @@ void gpc_print_polygon(gpc_polygon *p)
     
     for (v= 0; v < p->contour[c].num_vertices; v++)
       printf("% .*lf % .*lf\n",
-              DBL_DIG, p->contour[c].vertex[v].x,
-              DBL_DIG, p->contour[c].vertex[v].y);
+              DBL_DIG, intToDouble(p->contour[c].vertex[v].x),
+              DBL_DIG, intToDouble(p->contour[c].vertex[v].y));
   }
 }
 
@@ -1064,9 +1064,12 @@ gpc_polygon *gpc_read_all_polygon(FILE *fp)
   fscanf(fp, "%d", &(acc->contour[c].num_vertices));
   MALLOC(acc->contour[c].vertex, acc->contour[c].num_vertices
          * sizeof(gpc_vertex), "vertex creation", gpc_vertex);
-  for (v= 0; v < acc->contour[c].num_vertices; v++)
-    fscanf(fp, "%lf %lf", &(acc->contour[c].vertex[v].x),
-                          &(acc->contour[c].vertex[v].y));
+  for (v= 0; v < acc->contour[c].num_vertices; v++) {
+    double x,y;
+    fscanf(fp, "%lf %lf", &x, &y);
+    acc->contour[c].vertex[v].x = doubleToInt(x);
+    acc->contour[c].vertex[v].y = doubleToInt(y);
+  }
 
   for (i= 1; i < num_polygons; i++)
   {
@@ -1086,10 +1089,12 @@ gpc_polygon *gpc_read_all_polygon(FILE *fp)
 
     MALLOC(cur.contour[c].vertex, cur.contour[c].num_vertices
            * sizeof(gpc_vertex), "vertex creation", gpc_vertex);
-    for (v= 0; v < cur.contour[c].num_vertices; v++)
-      fscanf(fp, "%lf %lf", &(cur.contour[c].vertex[v].x),
-                            &(cur.contour[c].vertex[v].y));
-
+    for (v= 0; v < cur.contour[c].num_vertices; v++) {
+      double x,y;
+      fscanf(fp, "%lf %lf", &x, &y);
+      cur.contour[c].vertex[v].x = doubleToInt(x);
+      cur.contour[c].vertex[v].y = doubleToInt(y);
+    }
     // printf("DEBUG: acc\n");
     // gpc_print_polygon(acc);
     printf("DEBUG: cur %d\n",i);
@@ -1128,9 +1133,12 @@ void gpc_read_polygon(FILE *fp, int read_hole_flags, gpc_polygon *p)
 
     MALLOC(p->contour[c].vertex, p->contour[c].num_vertices
            * sizeof(gpc_vertex), "vertex creation", gpc_vertex);
-    for (v= 0; v < p->contour[c].num_vertices; v++)
-      fscanf(fp, "%lf %lf", &(p->contour[c].vertex[v].x),
-                            &(p->contour[c].vertex[v].y));
+    for (v= 0; v < p->contour[c].num_vertices; v++) {
+      double x, y;
+      fscanf(fp, "%lf %lf", &x, &y);
+      p->contour[c].vertex[v].x = doubleToInt(x);
+      p->contour[c].vertex[v].y = doubleToInt(y);
+    }
   }
 }
 
@@ -1149,8 +1157,8 @@ void gpc_write_polygon(FILE *fp, int write_hole_flags, gpc_polygon *p)
     
     for (v= 0; v < p->contour[c].num_vertices; v++)
       fprintf(fp, "% .*lf % .*lf\n",
-              DBL_DIG, p->contour[c].vertex[v].x,
-              DBL_DIG, p->contour[c].vertex[v].y);
+              DBL_DIG, intToDouble(p->contour[c].vertex[v].x),
+              DBL_DIG, intToDouble(p->contour[c].vertex[v].y));
   }
 }
 

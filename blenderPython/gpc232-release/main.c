@@ -15,14 +15,17 @@ int main(void)
   double width = 18.73;
 
   // Get Union results of the support materials
-  sfp= fopen("smalltest.out.out", "r");
+  sfp= fopen("blender_uv_output.out.out", "r");
   gpc_read_init(sfp, 1);
   union_result = gpc_read_all_polygon_recursive(0, gpc_get_num_polygons());
 
   // Construct the shape of the raw band material
-  constructRect(&raw_material, width, length);
+  constructRect(&raw_material, doubleToInt(width), doubleToInt(length));
 
   gpc_polygon_clip(GPC_DIFF, &raw_material, union_result, &result);
+
+
+
   ofp= fopen("outfile", "w");
   gpc_write_polygon(ofp, 1, union_result);
 

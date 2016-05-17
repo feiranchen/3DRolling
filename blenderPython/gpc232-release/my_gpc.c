@@ -231,9 +231,12 @@ gpc_polygon *gpc_read_leaf_gen(){
 
   MALLOC(poly->contour[0].vertex, poly->contour[0].num_vertices
          * sizeof(gpc_vertex), "vertex creation", gpc_vertex);
-  for (v= 0; v < poly->contour[0].num_vertices; v++)
-    fscanf(fp, "%lf %lf", &(poly->contour[0].vertex[v].x),
-                          &(poly->contour[0].vertex[v].y));
+  for (v= 0; v < poly->contour[0].num_vertices; v++) {
+    double x,y;
+    fscanf(fp, "%lf %lf", &x, &y);
+    poly->contour[0].vertex[v].x = doubleToInt(x);
+    poly->contour[0].vertex[v].y = doubleToInt(y);
+  }
   generated_polygons = 0;
   return poly;
 }
@@ -271,7 +274,7 @@ gpc_polygon *gpc_read_all_polygon_recursive(int start, int end)
   }
 }
 
-void constructRect(gpc_polygon* p, double width, double length) {
+void constructRect(gpc_polygon* p, int width, int length) {
   p->num_contours = 1;
   MALLOC(p->hole, p->num_contours * sizeof(int),
          "hole flag array creation", int);
@@ -288,4 +291,11 @@ void constructRect(gpc_polygon* p, double width, double length) {
   p->contour[0].vertex[2].y = length;
   p->contour[0].vertex[3].x = 0;
   p->contour[0].vertex[3].y = length;
+}
+
+int doubleToInt(double d) {
+  return (int)(d * PRECISION);
+}
+double intToDouble(int i){
+  return (double)i / PRECISION;
 }

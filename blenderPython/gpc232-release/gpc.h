@@ -47,7 +47,7 @@ Copyright: (C) Advanced Interfaces Group,
 #define GPC_EPSILON (DBL_EPSILON)
 
 #define GPC_VERSION "2.32"
-
+#define PRECISION 4
 
 /*
 ===========================================================================
@@ -65,8 +65,8 @@ typedef enum                        /* Set operation type                */
 
 typedef struct                      /* Polygon vertex structure          */
 {
-  double              x;            /* Vertex x component                */
-  double              y;            /* vertex y component                */
+  int              x;            /* Vertex x component                */
+  int              y;            /* vertex y component                */
 } gpc_vertex;
 
 typedef struct                      /* Vertex list structure             */
@@ -135,7 +135,13 @@ gpc_polygon * gpc_read_all_polygon(FILE *fp);
 void gpc_read_init(FILE *filepointer, int read_hole_flags);
 int gpc_get_num_polygons();
 gpc_polygon *gpc_read_all_polygon_recursive(int start, int end);
-void constructRect(gpc_polygon* p, double width, double length);
+void constructRect(gpc_polygon* p, int width, int length);
+int doubleToInt(double);
+double intToDouble(int);
+
+void gpc_write_polygon_percision_limit(FILE *outfile_ptr, int write_hole_flags,
+                                       gpc_polygon *polygon, int dec_points);
+
 #endif
 
 /*

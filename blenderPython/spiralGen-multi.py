@@ -30,7 +30,7 @@ def linkFaces(objfile, vertex_group_count):
 # All units should be in mm
 def spiralGen(filename, argv):
 	# Params(all units are in mm)
-	target_radius = 100 # 10cm
+	target_radius = 10 # 10cm
 	target_gap = 0.5 # .5mm
 	init_radius = 2 # inital rod radius 2mm
 	# Get customized parameters
@@ -53,7 +53,7 @@ def spiralGen(filename, argv):
 
 	height = target_radius * 2 # a reasonable height
 	max_slice_width = 0.6
-	cutoff_length = 600 # 10mm is typically a resonable length
+	cutoff_length = 10 # 10mm is typically a resonable length
 	file_count = 0
 	layer_thickness = target_gap / 10
 	uv_height = (height + 0.0)/cutoff_length
@@ -78,21 +78,21 @@ def spiralGen(filename, argv):
 			theta = i * (2 * math.pi / slice_num)
 			inner_radius = radius - layer_thickness
 			# Vertices and UV mapping
-			objfile.write("v {0} {1} {2}\n"
+			objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n"
 				.format(-height/2, math.sin(theta) * radius, math.cos(theta) * radius))
-			objfile.write("v {0} {1} {2}\n"
+			objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n"
 				.format(height/2, math.sin(theta) * radius, math.cos(theta) * radius))
-			objfile.write("v {0} {1} {2}\n"
+			objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n"
 				.format(-height/2, math.sin(theta) * inner_radius, math.cos(theta) * inner_radius))
-			objfile.write("v {0} {1} {2}\n"
+			objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n"
 				.format(height/2, math.sin(theta) * inner_radius, math.cos(theta) * inner_radius))
-			objfile.write("vt {0} {1}\n"
+			objfile.write("vt {0:.4f} {1:.4f}\n"
 				.format(0, outer_curr_lenth/cutoff_length))
-			objfile.write("vt {0} {1}\n"
+			objfile.write("vt {0:.4f} {1:.4f}\n"
 				.format(uv_height, outer_curr_lenth/cutoff_length))
-			objfile.write("vt {0} {1}\n"
+			objfile.write("vt {0:.4f} {1:.4f}\n"
 				.format(0, outer_curr_lenth/cutoff_length))
-			objfile.write("vt {0} {1}\n"
+			objfile.write("vt {0:.4f} {1:.4f}\n"
 				.format(uv_height, outer_curr_lenth/cutoff_length))
 
 			radius += d_radius
@@ -104,27 +104,27 @@ def spiralGen(filename, argv):
 				if outer_curr_lenth > cutoff_length:
 					theta_sliced = theta + (2 * math.pi / slice_num) * ((slice_length - (outer_curr_lenth - cutoff_length))/slice_length)
 					# Add Cutoff veritices and Vertices and UV mapping
-					objfile.write("v {0} {1} {2}\n".format(-height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
-					objfile.write("v {0} {1} {2}\n".format(height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
-					objfile.write("v {0} {1} {2}\n".format(-height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
-					objfile.write("v {0} {1} {2}\n".format(height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
-					objfile.write("vt {0} {1}\n".format(0, 1))
-					objfile.write("vt {0} {1}\n".format(uv_height, 1))
-					objfile.write("vt {0} {1}\n".format(0, 1))
-					objfile.write("vt {0} {1}\n".format(uv_height, 1))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(-height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(-height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(0, 1))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(uv_height, 1))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(0, 1))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(uv_height, 1))
 					linkFaces(objfile, vertex_group_count + 1)
 					objfile.close()
 					segments.append(SegmentMeta(ID = file_count, total_length = cutoff_length))
 					file_count += 1
 					objfile = open("gen/" + filename + "_" + str(file_count) +".obj", 'w')
-					objfile.write("v {0} {1} {2}\n".format(-height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
-					objfile.write("v {0} {1} {2}\n".format(height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
-					objfile.write("v {0} {1} {2}\n".format(-height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
-					objfile.write("v {0} {1} {2}\n".format(height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
-					objfile.write("vt {0} {1}\n".format(0, 0))
-					objfile.write("vt {0} {1}\n".format(uv_height, 0))
-					objfile.write("vt {0} {1}\n".format(0, 0))
-					objfile.write("vt {0} {1}\n".format(uv_height, 0))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(-height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(height/2, math.sin(theta_sliced) * radius, math.cos(theta_sliced) * radius))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(-height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
+					objfile.write("v {0:.4f} {1:.4f} {2:.4f}\n".format(height/2, math.sin(theta_sliced) * inner_radius, math.cos(theta_sliced) * inner_radius))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(0, 0))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(uv_height, 0))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(0, 0))
+					objfile.write("vt {0:.4f} {1:.4f}\n".format(uv_height, 0))
 					outer_curr_lenth -= cutoff_length
 					vertex_group_count = 1
 			else:
